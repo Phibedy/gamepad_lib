@@ -1,4 +1,4 @@
-include_directories("include")
+#include_directories("include")
 set(SRC
     "src/Gamepad_private.c"
 )

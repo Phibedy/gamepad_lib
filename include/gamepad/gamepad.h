@@ -4,10 +4,9 @@
 #include <string>
 #include <utility>
 #include <cstdint>
-#include <gamepad_native.h>
+//#include <gamepad_native.h>
+struct Gamepad_device;
 class Gamepad{
-    class GamepadHandler;
-    friend class GamepadHandler;
 public:
     struct axis{
         axis(){
@@ -23,10 +22,21 @@ public:
         std::uint8_t yBinding;
     };
 
-    void init();
-    void processEvents();
+    /**
+     * @brief buttonPressed
+     * @param name
+     * @return true if the button with the given name is pressed
+     */
     bool buttonPressed(std::string name);
+    /**
+     * @brief getAxis
+     * @param name
+     * @return the axis by the given name
+     */
     axis getAxis(std::string name);
+
+    const Gamepad_device* getNativeDevice();
+    void setNativeDevice(Gamepad_device* device);
 protected:
     void addButton(std::string name, std::uint8_t binding);
     void addAxis(std::string name,std::uint8_t xBinding, std::uint8_t yBinding);
@@ -47,7 +57,6 @@ private:
      * @brief axes
      */
     std::map<std::string,axis> axes;
-    Gamepad_device* getNativeDevice();
 };
 
 

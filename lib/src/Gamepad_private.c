@@ -21,7 +21,6 @@
 */
 
 #include <gamepad_native.h>
-#include <gamepad_native.h>
 #include <stdlib.h>
 
 void (* Gamepad_deviceAttachCallback)(struct Gamepad_device * device, void * context) = NULL;

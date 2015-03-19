@@ -1,8 +1,10 @@
 #include <gamepad/gamepad_handler.h>
 #include <gamepad_native.h>
-
+#include <iostream>
 //#############################Private methods########################
 bool GamepadHandler::verbose = true;
+std::vector<Gamepad_device*> GamepadHandler::connectedDevices;
+std::vector<Gamepad*> GamepadHandler::runningGamepads;
 
 void GamepadHandler::onButtonDown(struct Gamepad_device * device, unsigned int buttonID, double timestamp, void * context) {
     if (verbose) {
@@ -26,6 +28,13 @@ void GamepadHandler::onDeviceAttached(struct Gamepad_device * device, void * con
     if (verbose) {
         printf("Device ID %u attached (vendor = 0x%X; product = 0x%X; device = %s) with context %p\n", device->deviceID, device->vendorID, device->productID,device->description, context);
     }
+    //Check if device was already connected
+    for(Gamepad_device *cd :connectedDevices){
+        if(cd==device)
+            return;
+    }
+    connectedDevices.push_back(device);
+
 }
 
 void GamepadHandler::onDeviceRemoved(struct Gamepad_device * device, void * context) {
@@ -36,17 +45,35 @@ void GamepadHandler::onDeviceRemoved(struct Gamepad_device * device, void * cont
 
 //#############################Public methods#########################
 void GamepadHandler::init(){
-    Gamepad_deviceAttachFunc(onDeviceAttached, (void *) 0x1);
-    Gamepad_deviceRemoveFunc(onDeviceRemoved, (void *) 0x2);
-    Gamepad_buttonDownFunc(onButtonDown, (void *) 0x3);
-    Gamepad_buttonUpFunc(onButtonUp, (void *) 0x4);
-    Gamepad_axisMoveFunc(onAxisMoved, (void *) 0x5);
-    Gamepad_init();
+    static bool first =true;
+    if(first){
+        first = false;
+        Gamepad_deviceAttachFunc(onDeviceAttached, (void *) 0x1);
+        Gamepad_deviceRemoveFunc(onDeviceRemoved, (void *) 0x2);
+        Gamepad_buttonDownFunc(onButtonDown, (void *) 0x3);
+        Gamepad_buttonUpFunc(onButtonUp, (void *) 0x4);
+        Gamepad_axisMoveFunc(onAxisMoved, (void *) 0x5);
+        Gamepad_init();
+    }else{
+        std::cerr << "TRIED TO CALL GamepadHandler::init() twice"<<std::endl;
+    }
 }
 
-Gamepad* GamepadHandler::getGamePad(std::string name){
-    //TODO
-    return nullptr;
+
+Gamepad_device * GamepadHandler::getDevicePerName(std::string name, bool fullname){
+    Gamepad_device *found = nullptr;
+    for(Gamepad_device *d : connectedDevices){
+        if(fullname){
+            if(strcmp(d->description,name.c_str()) == 0){
+                found = d;
+            }
+        }else{
+            if(strstr(d->description, name.c_str()) != nullptr){
+                found = d;
+            }
+        }
+    }
+    return found;
 }
 
 Gamepad* GamepadHandler::getGamePad(int iD){
@@ -60,4 +87,8 @@ void GamepadHandler::removeGamepad(Gamepad* gamepad){
 
 void GamepadHandler::detectDevices(){
     Gamepad_detectDevices();
+}
+
+void GamepadHandler::processEvents(){
+    Gamepad_processEvents();
 }
