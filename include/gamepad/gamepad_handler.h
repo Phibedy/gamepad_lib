@@ -3,6 +3,7 @@
 #include <gamepad/gamepad.h>
 #include <vector>
 #include <cstring>
+#include <iostream>
 class GamepadHandler{
 
     static std::vector<Gamepad_device*> connectedDevices;
@@ -41,6 +42,7 @@ public:
             return nullptr;
         T *gamepad = new T();
         gamepad->setNativeDevice(found);
+        runningGamepads.push_back(gamepad);
 
         return gamepad;
     }

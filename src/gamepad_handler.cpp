@@ -2,7 +2,7 @@
 #include <gamepad_native.h>
 #include <iostream>
 //#############################Private methods########################
-bool GamepadHandler::verbose = true;
+bool GamepadHandler::verbose = false;
 std::vector<Gamepad_device*> GamepadHandler::connectedDevices;
 std::vector<Gamepad*> GamepadHandler::runningGamepads;
 
@@ -10,17 +10,32 @@ void GamepadHandler::onButtonDown(struct Gamepad_device * device, unsigned int b
     if (verbose) {
         printf("Button %u down on device %u at %f with context %p\n", buttonID, device->deviceID, timestamp, context);
     }
+    for(Gamepad *gp : runningGamepads){
+        if(gp->getNativeDevice() == device){
+            gp->setButtonState(buttonID,true);
+        }
+    }
 }
 
 void GamepadHandler::onButtonUp(struct Gamepad_device * device, unsigned int buttonID, double timestamp, void * context) {
     if (verbose) {
         printf("Button %u up on device %u at %f with context %p\n", buttonID, device->deviceID, timestamp, context);
     }
+    for(Gamepad *gp : runningGamepads){
+        if(gp->getNativeDevice() == device){
+            gp->setButtonState(buttonID,false);
+        }
+    }
 }
 
 void GamepadHandler::onAxisMoved(struct Gamepad_device * device, unsigned int axisID, float value, float lastValue, double timestamp, void * context) {
     if (verbose) {
         printf("Axis %u moved from %f to %f on device %u at %f with context %p\n", axisID, lastValue, value, device->deviceID, timestamp, context);
+    }
+    for(Gamepad *gp : runningGamepads){
+        if(gp->getNativeDevice() == device){
+            gp->setAxisState(axisID,value);
+        }
     }
 }
 
@@ -63,6 +78,7 @@ void GamepadHandler::init(){
 Gamepad_device * GamepadHandler::getDevicePerName(std::string name, bool fullname){
     Gamepad_device *found = nullptr;
     for(Gamepad_device *d : connectedDevices){
+        std::cout << "DEVICES!"<< d->description <<std::endl;
         if(fullname){
             if(strcmp(d->description,name.c_str()) == 0){
                 found = d;
@@ -73,6 +89,7 @@ Gamepad_device * GamepadHandler::getDevicePerName(std::string name, bool fullnam
             }
         }
     }
+
     return found;
 }
 
