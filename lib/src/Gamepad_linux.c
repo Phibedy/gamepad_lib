@@ -20,8 +20,8 @@
   Alex Diener adiener@sacredsoftware.net
 */
 
-#include "gamepad/Gamepad.h"
-#include "gamepad/Gamepad_private.h"
+#include "gamepad.h"
+#include "gamepad_private.h"
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>

@@ -1,21 +1,28 @@
 include_directories("include")
-set(SRC
-    "src/Gamepad_private.c"
-)
-if(UNIX)
-    set(SRC
-        ${SRC}
-        "src/Gamepad_linux.c"
-)
-endif(UNIX)
-#TODO windows macosx support
-set(HEADERS
-    "include/gamepad/Gamepad.h"
-    "include/gamepad/Gamepad_private.h"
-)
+#add lib written by someone else
+include_directories("lib/include")
+add_subdirectory(lib)
 
+#add super stuff
+set(SRC
+    "src/gamepad.cpp"
+)
+set(HEADERS
+    "include/gamepad/gamepad.h"
+)
+#========================add controllers=================================
+#add XBox controller
+set(SRC
+    ${SRC}
+    "controller/xbox/xbox_controller.cpp"
+)
+set(HEADERS
+    "include/controller/xbox/xbox_controller.h"
+    ${HEADERS}
+)
+#=========================================================
 add_library(gamepad_lib SHARED ${SRC} ${HEADERS})
 #TODO plattform check
-target_link_libraries(gamepad_lib PRIVATE pthread)
+target_link_libraries(gamepad_lib PRIVATE gamepad_external_lib)
 
 
