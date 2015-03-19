@@ -20,8 +20,8 @@
   Alex Diener adiener@sacredsoftware.net
 */
 
-#include <gamepad.h>
-#include <gamepad_private.h>
+#include <gamepad_native.h>
+#include <gamepad_native.h>
 #include <stdlib.h>
 
 void (* Gamepad_deviceAttachCallback)(struct Gamepad_device * device, void * context) = NULL;

@@ -10,8 +10,8 @@ if(UNIX)
 endif(UNIX)
 #TODO windows macosx support
 set(HEADERS
-    "include/gamepad.h"
-    "include/gamepad_private.h"
+    "include/gamepad_native.h"
+    "include/gamepad_native_private.h"
 )
 
 add_library(gamepad_external_lib SHARED ${SRC} ${HEADERS})
