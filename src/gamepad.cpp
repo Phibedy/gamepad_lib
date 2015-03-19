@@ -24,7 +24,7 @@ void onAxisMoved(struct Gamepad_device * device, unsigned int axisID, float valu
 
 void onDeviceAttached(struct Gamepad_device * device, void * context) {
     if (verbose) {
-        printf("Device ID %u attached (vendor = 0x%X; product = 0x%X) with context %p\n", device->deviceID, device->vendorID, device->productID, context);
+        printf("Device ID %u attached (vendor = 0x%X; product = 0x%X; device = %s) with context %p\n", device->deviceID, device->vendorID, device->productID,device->description, context);
     }
 }
 
