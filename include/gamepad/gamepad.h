@@ -13,12 +13,11 @@ struct Gamepad_device;
 /**
  * @brief The Gamepad class basic class for gamepads
  */
+class Gamepad
 #ifdef USE_CEREAL
-class Gamepad:public lms::Serializable{
-#else
-class Gamepad{
+:lms::Serializable
 #endif
-
+{
 public:
     /**
      * @brief The axis struct used to represent the axes of the controller, if the joystick only has one axis y will be zero
