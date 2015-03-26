@@ -13,7 +13,12 @@ struct Gamepad_device;
 /**
  * @brief The Gamepad class basic class for gamepads
  */
+#ifdef USE_CEREAL
 class Gamepad:public lms::Serializable{
+#else
+class Gamepad{
+#endif
+
 public:
     /**
      * @brief The axis struct used to represent the axes of the controller, if the joystick only has one axis y will be zero
@@ -100,6 +105,8 @@ private:
      */
     std::map<std::string,axis> axes;
 //stuff for serialize
+
+#ifdef USE_CEREAL
 public:
     /**
      * @brief Serialize the object into the given output stream.
@@ -112,6 +119,7 @@ public:
      * @param is input stream to read from
      */
     virtual void deserialize(std::istream &is);
+#endif
 };
 
 
