@@ -5,6 +5,7 @@
 #include <utility>
 #include <cstdint>
 #include <cmath>
+#include <lms/serializable.h>
 /**
  *so we don't have to include the library
  */
@@ -12,7 +13,7 @@ struct Gamepad_device;
 /**
  * @brief The Gamepad class basic class for gamepads
  */
-class Gamepad{
+class Gamepad:public lms::Serializable{
 public:
     /**
      * @brief The axis struct used to represent the axes of the controller, if the joystick only has one axis y will be zero
@@ -98,6 +99,19 @@ private:
      * @brief axes
      */
     std::map<std::string,axis> axes;
+//stuff for serialize
+public:
+    /**
+     * @brief Serialize the object into the given output stream.
+     * @param os output stream to write in
+     */
+    virtual void serialize(std::ostream &os) const;
+
+    /**
+     * @brief Deserialize the object from the given input stream.
+     * @param is input stream to read from
+     */
+    virtual void deserialize(std::istream &is);
 };
 
 

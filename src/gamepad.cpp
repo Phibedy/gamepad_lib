@@ -58,3 +58,22 @@ void Gamepad::printButtons(){
         std::cout << button.first << " " << button.second.second << std::endl;
     }
 }
+
+//#################################################################
+//##############SERIALIZE
+//To be able to serialize a gamepad without
+#ifndef USE_CEREAL
+
+void Gamepad::serialize(std::ostream &os) const{}
+
+void Gamepad::deserialize(std::istream &is){}
+#else
+
+void Gamepad::serialize(std::ostream &os) const{
+    //TODO
+}
+
+void Gamepad::deserialize(std::istream &is){
+    //TODO
+}
+#endif
