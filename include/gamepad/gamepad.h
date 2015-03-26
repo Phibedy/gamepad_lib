@@ -4,12 +4,19 @@
 #include <string>
 #include <utility>
 #include <cstdint>
+#include <cmath>
 /**
  *so we don't have to include the library
  */
 struct Gamepad_device;
+/**
+ * @brief The Gamepad class basic class for gamepads
+ */
 class Gamepad{
 public:
+    /**
+     * @brief The axis struct used to represent the axes of the controller, if the joystick only has one axis y will be zero
+     */
     struct axis{
         friend class Gamepad;
         axis(){
@@ -17,11 +24,22 @@ public:
         axis(float x, float y, std::uint8_t xBinding,std::uint8_t yBinding):
             x(x),y(y),xBinding(xBinding),yBinding(yBinding){
         }
-
+        /** value between -1 and 1 */
         float x;
+        /** value between -1 and 1 */
         float y;
+        /**
+         * @brief getAngle
+         * @return the angle of the axis in radians "+x"-axis = 0
+         */
+        float getAngle(){
+            return atan2(y,x);
+        }
+
     private:
+        /**binding for the underlying library */
         std::uint8_t xBinding;
+        /**binding for the underlying library */
         std::uint8_t yBinding;
     };
 
@@ -31,11 +49,23 @@ public:
      * @return true if the button with the given name is pressed
      */
     bool buttonPressed(std::string name);
-
+    /**
+     * @brief setButtonState normally called by the framework itself
+     * @param name
+     * @param pressed
+     */
     void setButtonState(std::string name, bool pressed);
-
+    /**
+     * @brief setButtonState normally called by the framework itself
+     * @param binding
+     * @param pressed
+     */
     void setButtonState(std::uint8_t binding, bool pressed);
-
+    /**
+     * @brief setAxisState normally called by the framework itself
+     * @param binding
+     * @param state
+     */
     void setAxisState(std::uint8_t binding, float state);
     /**
      * @brief getAxis
