@@ -5,7 +5,25 @@
 #include <utility>
 #include <cstdint>
 #include <cmath>
-#include <lms/serializable.h>
+
+#ifdef USE_CEREAL
+#include "lms/serializable.h"
+#include "cereal/cerealizable.h"
+#include "cereal/cereal.hpp"
+#include "cereal/types/map.hpp"
+#include "cereal/types/string.hpp"
+#include "cereal/types/tuple.hpp"
+
+namespace cereal {
+
+template<class Archive>
+void serialize(Archive & archive, std::pair<std::uint8_t,bool> &p) {
+    archive(p.first, p.second);
+}
+
+}  // namespace cereal
+#endif
+
 /**
  *so we don't have to include the library
  */
@@ -15,7 +33,7 @@ struct Gamepad_device;
  */
 class Gamepad
 #ifdef USE_CEREAL
-:lms::Serializable
+: public lms::Serializable
 #endif
 {
 public:
@@ -49,6 +67,12 @@ public:
             return atan2(y,x);
         }
 
+        #ifdef USE_CEREAL
+        template<class Archive>
+        void serialize(Archive & archive) {
+            archive(x, y);
+        }
+        #endif
     private:
         /**binding for the underlying library */
         std::uint8_t xBinding;
@@ -129,17 +153,12 @@ private:
 
 #ifdef USE_CEREAL
 public:
-    /**
-     * @brief Serialize the object into the given output stream.
-     * @param os output stream to write in
-     */
-    virtual void serialize(std::ostream &os) const;
+    CEREAL_SERIALIZATION()
 
-    /**
-     * @brief Deserialize the object from the given input stream.
-     * @param is input stream to read from
-     */
-    virtual void deserialize(std::istream &is);
+    template<class Archive>
+    void serialize(Archive & archive) {
+        archive(axes, buttons);
+    }
 #endif
 };
 

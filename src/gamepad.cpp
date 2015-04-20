@@ -75,17 +75,3 @@ void Gamepad::printAxes(){
         std::cout << axis.first << ": x: " << axis.second.x << " y: "<< axis.second.y << std::endl;
     }
 }
-
-//#################################################################
-//##############SERIALIZE
-//To be able to serialize a gamepad without
-#ifdef USE_CEREAL
-
-void Gamepad::serialize(std::ostream &os) const{
-    //TODO
-}
-
-void Gamepad::deserialize(std::istream &is){
-    //TODO
-}
-#endif
