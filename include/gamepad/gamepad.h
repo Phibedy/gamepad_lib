@@ -19,6 +19,14 @@ class Gamepad
 #endif
 {
 public:
+
+    /**
+     * @brief The GamepadType enum not used yet and not sure if we really need it!
+     */
+    enum class GamepadType{
+        DEFAULT,XBOX
+    };
+
     /**
      * @brief The axis struct used to represent the axes of the controller, if the joystick only has one axis y will be zero
      */
@@ -82,7 +90,21 @@ public:
     const Gamepad_device* getNativeDevice();
     void setNativeDevice(Gamepad_device* device);
 
+    /**
+     * @brief clear clears buttons and axes
+     */
+    void clear();
+    /**
+     * @brief clearButtons removes binding of buttons
+     */
+    void clearButtons();
+    /**
+     * @brief clearAxes removes binding of axes
+     */
+    void clearAxes();
+
     void printButtons();
+    void printAxes();
 protected:
     void addButton(std::string name, std::uint8_t binding);
     void addAxis(std::string name,std::uint8_t xBinding, std::uint8_t yBinding);

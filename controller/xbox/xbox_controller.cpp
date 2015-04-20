@@ -1,7 +1,7 @@
 #include <controller/xbox/xbox_controller.h>
 #include <iostream>
 XBoxController::XBoxController(){
-    std::cout << "ENABLE XBOX_CONTROLLER!" <<std::endl;
+    //std::cout << "ENABLE XBOX_CONTROLLER!" <<std::endl;
     //add buttons
     addButton("A",0);
     addButton("B",1);
@@ -16,10 +16,10 @@ XBoxController::XBoxController(){
     addButton("XBOX",8);
 
     //add axis
-    addAxis("A1",0,1);
-    addAxis("A1",6,7);
-    addAxis("A1",3,4);
-    addAxis("A1",2,-1);
-    addAxis("A1",5,-1);
-    std::cout << "ADDED BUTTONS!!!!!!!!!!!!" <<std::endl;
+    addAxis("LS",0,1);
+    addAxis("MX",6,7);
+    addAxis("RS",3,4);
+    addAxis("LT",2,-1);
+    addAxis("RT",5,-1);
+    //std::cout << "ADDED BUTTONS!!!!!!!!!!!!" <<std::endl;
 }

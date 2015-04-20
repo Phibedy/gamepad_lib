@@ -32,11 +32,9 @@ void Gamepad::setButtonState(std::uint8_t binding, bool pressed){
     for(auto &button : buttons){
         if(button.second.first == binding){
             button.second.second = pressed;
-            std::cout << "set button state: " << pressed << std::endl;
             return;
         }
     }
-    std::cout << "FAILED to set button state: " << pressed << std::endl;
 }
 
 void Gamepad::setAxisState(std::uint8_t binding, float state){
@@ -51,11 +49,30 @@ void Gamepad::setAxisState(std::uint8_t binding, float state){
         }
     }
 }
+void Gamepad::clear(){
+    clearButtons();
+    clearAxes();
+}
+
+void Gamepad::clearButtons(){
+    buttons.clear();
+}
+
+void Gamepad::clearAxes(){
+    axes.clear();
+}
 
 void Gamepad::printButtons(){
     std::cout << "###################### BUTTONS ######################"<<std::endl;
     for(auto &button:buttons){
         std::cout << button.first << " " << button.second.second << std::endl;
+    }
+}
+
+void Gamepad::printAxes(){
+    std::cout << "###################### AXIS ######################"<<std::endl;
+    for(auto &axis:axes){
+        std::cout << axis.first << ": x: " << axis.second.x << " y: "<< axis.second.y << std::endl;
     }
 }
 
