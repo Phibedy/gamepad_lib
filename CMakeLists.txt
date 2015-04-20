@@ -11,16 +11,7 @@ set(SRC
 set(HEADERS
     "include/gamepad/gamepad.h"
     "include/gamepad/gamepad_handler.h"
-)
-#========================add controllers=================================
-#add XBox controller
-set(SRC
-    ${SRC}
-    "controller/xbox/xbox_controller.cpp"
-)
-set(HEADERS
-    "include/controller/xbox/xbox_controller.h"
-    ${HEADERS}
+    "include/gamepad/gamepad_types.h"
 )
 #=========================================================
 add_library(gamepad_lib SHARED ${SRC} ${HEADERS})

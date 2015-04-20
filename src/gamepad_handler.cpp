@@ -6,6 +6,10 @@ bool GamepadHandler::verbose = false;
 std::vector<Gamepad_device*> GamepadHandler::connectedDevices;
 std::vector<Gamepad*> GamepadHandler::runningGamepads;
 
+
+lms::Module *GamepadHandler::maintainer;
+lms::DataManager *GamepadHandler::dataManager;
+
 void GamepadHandler::onButtonDown(struct Gamepad_device * device, unsigned int buttonID, double timestamp, void * context) {
     if (verbose) {
         printf("Button %u down on device %u at %f with context %p\n", buttonID, device->deviceID, timestamp, context);
@@ -59,7 +63,9 @@ void GamepadHandler::onDeviceRemoved(struct Gamepad_device * device, void * cont
 }
 
 //#############################Public methods#########################
-void GamepadHandler::init(){
+void GamepadHandler::init(lms::Module *module, lms::DataManager *dataManager){
+    maintainer = module;
+    GamepadHandler::dataManager = dataManager;
     static bool first =true;
     if(first){
         first = false;
@@ -80,6 +86,7 @@ Gamepad_device * GamepadHandler::getDevicePerName(std::string name, bool fullnam
     for(Gamepad_device *d : connectedDevices){
         std::cout << "DEVICES!"<< d->description <<std::endl;
         if(fullname){
+            //TODO both to lower case
             if(strcmp(d->description,name.c_str()) == 0){
                 found = d;
             }

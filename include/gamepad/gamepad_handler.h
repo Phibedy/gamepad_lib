@@ -4,6 +4,8 @@
 #include <vector>
 #include <cstring>
 #include <iostream>
+#include <lms/datamanager.h>
+#include <lms/module.h>
 class GamepadHandler{
 
     static std::vector<Gamepad_device*> connectedDevices;
@@ -20,27 +22,44 @@ class GamepadHandler{
     static void onDeviceAttached(struct Gamepad_device * device, void * context);
 
     static void onDeviceRemoved(struct Gamepad_device * device, void * context);
-
+    /**
+     * @brief getDevicePerName
+     * @param name
+     * @param fullname
+     * @return the native device found by the given name
+     */
     static Gamepad_device * getDevicePerName(std::string name, bool fullname);
+
+    static lms::Module *maintainer;
+    static lms::DataManager *dataManager;
 public:
     /**
      * @brief init should only be called once!
      */
-    static void init();
+    static void init(lms::Module *module, lms::DataManager *dataManager);
+
+    static Gamepad* getGamepad(lms::Module *module,std::string name, bool fullname = true){
+        return getGamepad<Gamepad>(module,name,fullname);
+    }
+
     /**
-     * @brief getGamePad
+     * @brief getGamePad by default T should be Gamepad
      * @param name
      * @param fullname if false the name can be only a part of the device-name
      * @return
      */
     template<class T>
-    static T* getGamePad(std::string name, bool fullname = true){
+    static T* getGamepad(lms::Module *module,std::string name, bool fullname = true){
         //TODO check if device is already in use
         Gamepad_device *found = getDevicePerName(name,fullname);
         //no valid Gamepad found
         if(found == nullptr)
             return nullptr;
-        T *gamepad = new T();
+        T * gamepad = dataManager->writeChannel<T>(module,name);
+        if(maintainer->getName() != module->getName()){
+            dataManager->readChannel<T>(maintainer,name);
+        }
+
         gamepad->setNativeDevice(found);
         runningGamepads.push_back(gamepad);
 

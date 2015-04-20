@@ -129,7 +129,6 @@ public:
 
     void printButtons();
     void printAxes();
-protected:
     void addButton(std::string name, std::uint8_t binding);
     void addAxis(std::string name,std::uint8_t xBinding, std::uint8_t yBinding);
 private:
