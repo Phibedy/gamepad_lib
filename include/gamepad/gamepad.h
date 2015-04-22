@@ -85,7 +85,7 @@ public:
      * @param name
      * @return true if the button with the given name is pressed
      */
-    bool buttonPressed(std::string name);
+    bool buttonPressed(std::string name) const;
     /**
      * @brief setButtonState normally called by the framework itself
      * @param name
@@ -109,9 +109,9 @@ public:
      * @param name
      * @return the axis by the given name
      */
-    axis getAxis(std::string name);
+    const axis& getAxis(std::string name) const;
 
-    const Gamepad_device* getNativeDevice();
+    const Gamepad_device* getNativeDevice()const;
     void setNativeDevice(Gamepad_device* device);
 
     /**
@@ -127,8 +127,8 @@ public:
      */
     void clearAxes();
 
-    void printButtons();
-    void printAxes();
+    void printButtons() const;
+    void printAxes() const;
     void addButton(std::string name, std::uint8_t binding);
     void addAxis(std::string name,std::uint8_t xBinding, std::uint8_t yBinding);
 private:

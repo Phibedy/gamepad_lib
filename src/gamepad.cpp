@@ -13,7 +13,7 @@ void Gamepad::addAxis(std::string name,std::uint8_t xBinding, std::uint8_t yBind
     axes[name] = axis(0,0,xBinding,yBinding);
 }
 
-const Gamepad_device* Gamepad::getNativeDevice(){
+const Gamepad_device* Gamepad::getNativeDevice() const{
     return nativeDevice;
 }
 
@@ -62,14 +62,33 @@ void Gamepad::clearAxes(){
     axes.clear();
 }
 
-void Gamepad::printButtons(){
+
+const Gamepad::axis& Gamepad::getAxis(std::string name) const{
+    auto res= axes.find(name);
+    if(res == axes.end()){
+        //nice error I dont't care about
+    }
+    return res->second;
+}
+
+
+bool Gamepad::buttonPressed(std::string name) const{
+    auto res= buttons.find(name);
+    if(res == buttons.end()){
+        //nice error I dont't care about
+        return false;
+    }
+    return res->second.second;
+}
+
+void Gamepad::printButtons() const{
     std::cout << "###################### BUTTONS ######################"<<std::endl;
     for(auto &button:buttons){
         std::cout << button.first << " " << button.second.second << std::endl;
     }
 }
 
-void Gamepad::printAxes(){
+void Gamepad::printAxes() const{
     std::cout << "###################### AXIS ######################"<<std::endl;
     for(auto &axis:axes){
         std::cout << axis.first << ": x: " << axis.second.x << " y: "<< axis.second.y << std::endl;
