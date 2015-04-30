@@ -38,8 +38,8 @@ public:
      */
     static void init(lms::Module *module, lms::DataManager *dataManager);
 
-    static Gamepad* getGamepad(lms::Module *module,std::string name, bool fullname = true){
-        return getGamepad<Gamepad>(module,name,fullname);
+    static Gamepad* getGamepad(lms::Module *module,std::string name, std::string dataChannelname,bool fullname = true){
+        return getGamepad<Gamepad>(module,name,dataChannelname,fullname);
     }
 
     /**
@@ -49,15 +49,15 @@ public:
      * @return
      */
     template<class T>
-    static T* getGamepad(lms::Module *module,std::string name, bool fullname = true){
+    static T* getGamepad(lms::Module *module,std::string name,std::string dataChannelname, bool fullname = true){
         //TODO check if device is already in use
         Gamepad_device *found = getDevicePerName(name,fullname);
         //no valid Gamepad found
         if(found == nullptr)
             return nullptr;
-        T * gamepad = dataManager->writeChannel<T>(module,name);
+        T * gamepad = dataManager->writeChannel<T>(module,dataChannelname);
         if(maintainer->getName() != module->getName()){
-            dataManager->readChannel<T>(maintainer,name);
+            dataManager->readChannel<T>(maintainer,dataChannelname);
         }
 
         gamepad->setNativeDevice(found);
