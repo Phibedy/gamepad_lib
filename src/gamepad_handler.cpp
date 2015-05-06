@@ -17,6 +17,7 @@ void GamepadHandler::onButtonDown(struct Gamepad_device * device, unsigned int b
     for(Gamepad *gp : runningGamepads){
         if(gp->getNativeDevice() == device){
             gp->setButtonState(buttonID,true);
+            gp->updateTimestamp();
         }
     }
 }
@@ -28,6 +29,7 @@ void GamepadHandler::onButtonUp(struct Gamepad_device * device, unsigned int but
     for(Gamepad *gp : runningGamepads){
         if(gp->getNativeDevice() == device){
             gp->setButtonState(buttonID,false);
+            gp->updateTimestamp();
         }
     }
 }
@@ -39,6 +41,7 @@ void GamepadHandler::onAxisMoved(struct Gamepad_device * device, unsigned int ax
     for(Gamepad *gp : runningGamepads){
         if(gp->getNativeDevice() == device){
             gp->setAxisState(axisID,value);
+            gp->updateTimestamp();
         }
     }
 }
@@ -52,11 +55,22 @@ void GamepadHandler::onDeviceAttached(struct Gamepad_device * device, void * con
         if(cd==device)
             return;
     }
+    for(Gamepad *gp : runningGamepads){
+        if(gp->getNativeDevice() == device){
+            gp->connected(true);
+            gp->updateTimestamp();
+        }
+    }
     connectedDevices.push_back(device);
 
 }
 
 void GamepadHandler::onDeviceRemoved(struct Gamepad_device * device, void * context) {
+    for(Gamepad *gp : runningGamepads){
+        if(gp->getNativeDevice() == device){
+            gp->connected(false);
+        }
+    }
     if (verbose) {
         printf("Device ID %u removed with context %p\n", device->deviceID, context);
     }

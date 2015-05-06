@@ -5,6 +5,7 @@
 #include <utility>
 #include <cstdint>
 #include <cmath>
+#include <lms/extra/time.h>
 
 #ifdef USE_CEREAL
 #include "lms/serializable.h"
@@ -131,6 +132,12 @@ public:
     void printAxes() const;
     void addButton(std::string name, std::uint8_t binding);
     void addAxis(std::string name,std::uint8_t xBinding, std::uint8_t yBinding);
+
+    void connected(bool isConnected);
+    bool connected() const;
+
+    void updateTimestamp();
+    lms::extra::PrecisionTime timestamp() const;
 private:
     /**
      * @brief nativeDevice not really native but ok :)
@@ -148,6 +155,14 @@ private:
      * @brief axes
      */
     std::map<std::string,axis> axes;
+
+    /**
+     * @brief Is true when the controller is connected to the PC.
+     */
+    bool isConnected;
+
+    lms::extra::PrecisionTime lastUpdate;
+
 //stuff for serialize
 
 #ifdef USE_CEREAL

@@ -49,6 +49,24 @@ void Gamepad::setAxisState(std::uint8_t binding, float state){
         }
     }
 }
+
+
+void Gamepad::connected(bool isConnected) {
+    this->isConnected = isConnected;
+}
+
+bool Gamepad::connected() const {
+    return isConnected;
+}
+
+void Gamepad::updateTimestamp() {
+    this->lastUpdate = lms::extra::PrecisionTime::now();
+}
+
+lms::extra::PrecisionTime Gamepad::timestamp() const {
+    return lastUpdate;
+}
+
 void Gamepad::clear(){
     clearButtons();
     clearAxes();
