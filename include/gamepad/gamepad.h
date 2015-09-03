@@ -21,6 +21,9 @@ template<class Archive>
 void serialize(Archive & archive, std::pair<std::uint8_t,bool> &p) {
     archive(p.first, p.second);
 }
+void serialize(Archive & archive, lms::extra::PrecisionTime &pt) {
+    //archive(pt.micros);
+}
 
 }  // namespace cereal
 #endif
@@ -171,7 +174,7 @@ public:
 
     template<class Archive>
     void serialize(Archive & archive) {
-        archive(axes, buttons);
+        archive(axes, buttons,isConnected);
     }
 #endif
 };
