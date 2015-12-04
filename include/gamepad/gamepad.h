@@ -22,11 +22,6 @@ void serialize(Archive & archive, std::pair<std::uint8_t,bool> &p) {
     archive(p.first, p.second);
 }
 
-template<class Archive>
-void serialize(Archive & archive, lms::extra::PrecisionTime &pt) {
-    //archive(pt.micros);
-}
-
 }  // namespace cereal
 #endif
 
