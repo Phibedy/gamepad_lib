@@ -8,7 +8,7 @@ std::vector<Gamepad*> GamepadHandler::runningGamepads;
 
 
 lms::Module *GamepadHandler::maintainer;
-lms::DataManager *GamepadHandler::dataManager;
+lms::Module::FakeDataManager *GamepadHandler::dataManager;
 
 void GamepadHandler::onButtonDown(struct Gamepad_device * device, unsigned int buttonID, double timestamp, void * context) {
     if (verbose) {
@@ -77,7 +77,7 @@ void GamepadHandler::onDeviceRemoved(struct Gamepad_device * device, void * cont
 }
 
 //#############################Public methods#########################
-void GamepadHandler::init(lms::Module *module, lms::DataManager *dataManager){
+void GamepadHandler::init(lms::Module *module, lms::Module::FakeDataManager *dataManager){
     maintainer = module;
     GamepadHandler::dataManager = dataManager;
     static bool first =true;

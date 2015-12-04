@@ -31,12 +31,12 @@ class GamepadHandler{
     static Gamepad_device * getDevicePerName(std::string name, bool fullname);
 
     static lms::Module *maintainer;
-    static lms::DataManager *dataManager;
+    static lms::Module::FakeDataManager *dataManager;
 public:
     /**
      * @brief init should only be called once!
      */
-    static void init(lms::Module *module, lms::DataManager *dataManager);
+    static void init(lms::Module *module, lms::Module::FakeDataManager *dataManager);
 
     static Gamepad* getGamepad(lms::Module *module,std::string name, std::string dataChannelname,bool fullname = true){
         return getGamepad<Gamepad>(module,name,dataChannelname,fullname);
@@ -55,15 +55,15 @@ public:
         //no valid Gamepad found
         if(found == nullptr)
             return nullptr;
-        T * gamepad = dataManager->writeChannel<T>(module,dataChannelname);
+        lms::WriteDataChannel<T> gamepad = dataManager->writeChannel<T>(module,dataChannelname);
         if(maintainer->getName() != module->getName()){
             dataManager->readChannel<T>(maintainer,dataChannelname);
         }
 
         gamepad->setNativeDevice(found);
-        runningGamepads.push_back(gamepad);
+        runningGamepads.push_back(gamepad.get());
 
-        return gamepad;
+        return gamepad.get();
     }
     // TODO write template function
     static Gamepad* getGamePad(int iD);
